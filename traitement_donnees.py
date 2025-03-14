@@ -9,58 +9,42 @@ this project.
 '''
 
 #import libraries
-import numpy as np 
+import numpy as np
 
-#path to the file to modify
-path_file= './list_attr_celeba.txt'
+class AttributeTable:
+    def __init__(self, file_path):
+        self.table = self.load_attributes(file_path)
 
-with open(path_file, 'r') as file:
-    ligns= file.readlines()
+    def load_attributes(self, file_path):
+        with open(file_path, 'r') as file:
+            ligns = file.readlines()
 
-#remove all the attributes unuseful 
-attributes=ligns[1].split(' ')
-attributes.remove('Attractive')
-attributes.remove('Bags_Under_Eyes')
-attributes.remove('Blurry')
-attributes.remove('Heavy_Makeup')
-attributes.remove('Mouth_Slightly_Open')
-attributes.remove('Smiling')
-attributes.remove('Wearing_Earrings')
-attributes.remove('Wearing_Hat')
-attributes.remove('Wearing_Lipstick')
-attributes.remove('Wearing_Necklace')
-attributes.remove('Wearing_Necktie')
-attributes.remove('\n')
+        attributes = ligns[1].split(' ')
+        attributes_to_remove = ['Attractive', 'Bags_Under_Eyes', 'Blurry', 'Heavy_Makeup',
+                                'Mouth_Slightly_Open', 'Smiling', 'Wearing_Earrings',
+                                'Wearing_Hat', 'Wearing_Lipstick', 'Wearing_Necklace',
+                                'Wearing_Necktie', '\n']
 
-#initialize the table
-table= np.array(attributes)
+        for attr in attributes_to_remove:
+            attributes.remove(attr)
 
+        table = np.array(attributes)
 
-#for all the lines, some modifications then add them to the table
-for index in range(2, len(ligns)):
-    line=(ligns[index].split(' ')) # transform into list
-    line=line[1:] #remove title of image
-    line= [int(i) for i in line if i!=''] #transform in integer
-    #deletion of the values linked to unuseful attributes
-    del(line[3])
-    del(line[3])
-    del(line[9])
-    del( line[16])
-    del( line[18])
-    del( line[27])
-    del( line[29])
-    del( line[29])
-    del( line[29])
-    del( line[29])
-    del( line[29])
-    #convert into array and add to table
-    line=np.array(line)
-    new_matrix= np.vstack((table, line))
-    table=new_matrix 
-    
+        for index in range(2, len(ligns)):
+            line = ligns[index].split(' ')
+            line = line[1:]
+            line = [int(i) for i in line if i != '']
 
+            # Indices à supprimer
+            indices_to_remove = [3, 3, 9, 16, 18, 27, 29, 29, 29, 29, 29]
+            for idx in sorted(indices_to_remove, reverse=True):
+                del line[idx]
 
+            line = np.array(line)
+            table = np.vstack((table, line))
 
+        return table
 
-
+    def get_table(self):
+        return self.table
 
