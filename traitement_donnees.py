@@ -8,7 +8,6 @@ We have removed some attributes deemed unimportant in the context of
 this project.
 '''
 
-#import libraries
 import numpy as np
 
 class AttributeTable:
@@ -28,7 +27,9 @@ class AttributeTable:
         for attr in attributes_to_remove:
             attributes.remove(attr)
 
-        table = np.array(attributes)
+        table = [attributes]
+        
+        indices_to_remove = [3, 3, 9, 16, 18, 27, 29, 29, 29, 29, 29]
 
         for index in range(2, len(ligns)):
             line = ligns[index].split(' ')
@@ -36,15 +37,16 @@ class AttributeTable:
             line = [int(i) for i in line if i != '']
 
             # Indices à supprimer
-            indices_to_remove = [3, 3, 9, 16, 18, 27, 29, 29, 29, 29, 29]
-            for idx in sorted(indices_to_remove, reverse=True):
-                del line[idx]
+            line = [line[i] for i in range(len(line)) if i not in indices_to_remove]
 
-            line = np.array(line)
-            table = np.vstack((table, line))
+            table.append(line)
+          
 
-        return table
+        return np.array(table)
 
     def get_table(self):
         return self.table
+
+
+
 
