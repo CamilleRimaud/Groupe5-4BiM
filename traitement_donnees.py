@@ -29,7 +29,7 @@ class AttributeTable:
 
         table = [attributes]
         
-        indices_to_remove = [3, 3, 9, 16, 18, 27, 29, 29, 29, 29, 29]
+        indices_to_remove = [3,4,11,19,22,32,35,36,37,38,39]
 
         for index in range(2, len(ligns)):
             line = ligns[index].split(' ')
