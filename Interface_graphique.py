@@ -10,6 +10,7 @@ class RobotPortrait:
     def __init__(self, root):
         self.root = root
         self.root.title("Robot Portrait Generator")
+        #self.root.geometry("2000x1000")
         self.root.configure(bg="#eefbfb")
 
         # To keep user's choices
@@ -19,12 +20,27 @@ class RobotPortrait:
         self.history = []  #if we want to come back
 
         # Save test portraits
-        self.image_folder = "images"
-        self.all_images = [f for f in os.listdir(self.image_folder) if f.endswith(".jpg")] #plutôt flou comme fonction j'avoue ^^'
+        self.image_folder = "data_sample"
+        self.all_images = [f for f in os.listdir(self.image_folder) if f.endswith(".jpg")]
 
         self.create_widgets()
 
     def create_widgets(self):
+        # create all widgets
+        self.main_page_widg()
+    
+    def main_page_widg(self):
+        self.title_label = tk.Label(self.root, text="Welcome to your Robot Portrait Generator", font=("Baskerville", 24), bg="#eefbfb", fg="#722f37")
+        self.title_label.pack(pady=20)
+
+        self.start_button = tk.Button(self.root, text="Start", command=self.portrait_generator, font=("Baskerville", 15))
+        self.start_button.pack(pady=20)
+        
+    def portrait_generator(self):
+        # Remove home page widgets
+        self.title_label.pack_forget()
+        self.start_button.pack_forget()
+        
         # Title with instruction
         self.label_instruction = tk.Label(self.root, text="Choose the 4 most look-alike portraits by clinking on it.", font=("Baskerville", 12), bg="#eefbfb", fg="#722f37")
         self.label_instruction.pack(pady=10)
@@ -33,7 +49,7 @@ class RobotPortrait:
         self.frame_choices = tk.Frame(self.root, bg="#eefbfb")
         self.frame_choices.pack()
 
-        self.choices = ["Cheveux courts", "Cheveux longs", "Barbe", "Lunettes", "Sourcils épais", "Visage rond"]	#simple liste test
+        self.choices = ["Male", "Pale-skin", "Eyeglasses", "Gray Hair", "Blond Hair", "Black Hair", "Brown Hair", "Bald", "Straight Hair", "Wavy Hair", "No Beard", "Mustache", "Goatee"]	#simple liste test
         self.check_vars = {choices: tk.IntVar() for choices in self.choices}   #plutôt flou
 
         for choices in self.choices:
@@ -64,6 +80,12 @@ class RobotPortrait:
         
         self.btn_next = tk.Button(self.frame_btn, text="Thank you, Next !", command=self.next_step, state=tk.DISABLED, bg="#401740", fg="white", font=("Baskerville", 10, "bold"))
         self.btn_next.pack(side=tk.RIGHT, padx=10)
+        
+        self.frame_right = tk.Frame(self.root, bg="#eefbfb")  # New frame for right alignment
+        self.frame_right.pack(side=tk.RIGHT, padx=20)
+
+        self.btn_final_choice = tk.Button(self.frame_right, text="My Final Choice", command=self.final_choice, state=tk.DISABLED, bg="#0F0616", fg="white", font=("Baskerville", 10, "bold"))
+        self.btn_final_choice.pack(side=tk.RIGHT, padx=10)
 
     def generate_portraits(self):
         " Generate 12 portraits "
@@ -106,13 +128,36 @@ class RobotPortrait:
         if len(self.selected_portraits) > 4:
             messagebox.showwarning("Warning !!", "You have to only select 4 portraits.")
             return
+        if len(self.selected_portraits) == 1:
+            self.btn_final_choice.config(state=tk.NORMAL)
 
         # 1st portrait chosen is the best one
         img_path = os.path.join(self.image_folder, self.selected_portraits[0])
-        img = Image.open(img_path).resize((128, 128))
-        img_tk = ImageTk.PhotoImage(img)
-        self.canvas_selected.create_image(128, 128, image=img_tk)
+        img = Image.open(img_path)
+        img_resized=img.resize((128,128))
+        img_tk = ImageTk.PhotoImage(img_resized)
+        self.canvas_selected.create_image(64, 64, image=img_tk)
         self.canvas_selected.image = img_tk
+
+    def final_choice(self):
+        self.history.append(self.selected_portraits.copy())
+        
+        for widget in self.root.winfo_children():
+            widget.destroy()
+            
+        final_message=tk.Label(self.root, text="Your final chosen portrait!", font=("Baskerville", 24), bg="#eefbfb", fg="#722f37")
+        final_message.pack(pady=20)
+        
+        final_portrait_path = os.path.join(self.image_folder, self.selected_portraits[0])
+        img = Image.open(final_portrait_path).resize((300, 300))
+        img_tk = ImageTk.PhotoImage(img)
+
+        final_portrait_label = tk.Label(self.root, image=img_tk)
+        final_portrait_label.image = img_tk
+        final_portrait_label.pack(pady=20)
+
+        ending_message = tk.Label(self.root, text="Thank you for using the Robot Portrait Generator!", font=("Baskerville", 18), bg="#eefbfb", fg="#722f37")
+        ending_message.pack(pady=10)
 
     def next_step(self):
         "Next step with 12 new portraits"
