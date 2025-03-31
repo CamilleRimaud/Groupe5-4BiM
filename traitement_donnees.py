@@ -22,14 +22,21 @@ class AttributeTable:
         attributes_to_remove = ['Attractive', 'Bags_Under_Eyes', 'Blurry', 'Heavy_Makeup',
                                 'Mouth_Slightly_Open', 'Smiling', 'Wearing_Earrings',
                                 'Wearing_Hat', 'Wearing_Lipstick', 'Wearing_Necklace',
-                                'Wearing_Necktie', '\n']
+                                'Wearing_Necktie', '\n','5_o_Clock_Shadow ',
+                                'Arched_Eyebrows ', 'Bangs','Big_Lips',
+                                'Big_Nose ','Bushy_Eyebrows ','Chubby ',
+                                'Double_Chin ', 'High_Cheekbones ',
+                                'Narrow_Eyes', 'Oval_Face ','Pointy_Nose ',
+                                'Receding_Hairline ', 'Rosy_Cheeks ',
+                                'Sideburns ', 'Young ']
+
 
         for attr in attributes_to_remove:
             attributes.remove(attr)
 
         table = [attributes]
         
-        indices_to_remove = [3,4,11,19,22,32,35,36,37,38,39]
+        indices_to_remove = [1,2,3,4,6,7,8,11,13,14,15,19,20,22,24,26,28,29,30,31,32,35,36,37,38,39,40] 
 
         for index in range(2, len(ligns)):
             line = ligns[index].split(' ')
