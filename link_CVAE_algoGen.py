@@ -4,8 +4,8 @@
 from tensorflow import keras
 import matplotlib.pyplot as plt
 import numpy as np
-from CVAE_sans_label.ipynb import CVAE, encoder, decoder, LatentSpaceVisualizationCallback, x_t, data
-from algo_gen.py import crossover, mutation
+from CVAE_sans_labels import CVAE, encoder, decoder, LatentSpaceVisualizationCallback, x_t, data
+from algo_gen import crossover, mutation
 
 # initialisation du modèle
 
@@ -22,7 +22,7 @@ cvae.compile(optimizer=keras.optimizers.Adam(clipnorm=1.0))
 cvae.fit(x_t, epochs=100, batch_size=32)
 
 
-#génération d'un vecteur latent 
+#génération d'un vecteur latent
 images_originales=data[0:5] # il faudra mettre le choix de l'user
 
 #calcul vecteurs latents
@@ -45,13 +45,13 @@ mutant10=mutation(crossFace4)
 mutant11=mutation(crossFace5)
 mutant12=mutation(crossFace6)
 
-mutatedV=np.array(mutant1,mutant2,mutant3,mutant4,mutant5,mutant6,
-                  mutant7,mutant8, mutant9, mutant10, mutant11, mutant12)
+mutatedV=np.array([mutant1,mutant2,mutant3,mutant4,mutant5,mutant6,
+                  mutant7,mutant8, mutant9, mutant10, mutant11, mutant12])
 
-# reconstruction nouvelles images avec vecteurs latents mutés 
+# reconstruction nouvelles images avec vecteurs latents mutés
 nouvelles_images = cvae.decoder.predict([mutatedV])
 
-#affichage à envoyer dans l'interface 
+#affichage à envoyer dans l'interface
 
 plt.subplot(2, 2, 2)
 plt.title("Nouveau portrait 1")
