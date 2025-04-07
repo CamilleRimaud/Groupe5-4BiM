@@ -23,6 +23,20 @@ class RobotPortrait:
         self.image_folder = "data_sample"
         self.all_images = [f for f in os.listdir(self.image_folder) if f.endswith(".jpg")]
 
+        # Scrollbar
+        self.canvas = tk.Canvas(self.root, bg="#eefbfb")
+
+        self.scrollbar = tk.Scrollbar(self.root, orient=VERTICAL, command=self.canvas.yview)
+        self.scrollbar.pack(side=RIGHT, fill=Y)
+        self.canvas.config(yscrollcommand=self.scrollbar.set)
+
+        self.scrollable_frame = tk.Frame(self.canvas, bg="#eefbfb")
+        self.canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
+
+        self.scrollable_frame.bind(
+            "<Configure>", lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all"))
+        )
+
         self.create_widgets()
 
     def create_widgets(self):
