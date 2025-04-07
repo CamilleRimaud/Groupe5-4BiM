@@ -2,9 +2,9 @@
 
 import pandas as pd
 from Interface_graphique import RobotPortrait
-from traitement_donnees import AttributeTable
 import tkinter as tk
 import numpy as np
+import json
 
 #functions
 
@@ -112,14 +112,22 @@ def FirstGen(selected_features, df):
 df=aFewModifications(createDataframe("list_attr_celeba.txt"))
 root = tk.Tk()
 robot_portrait = RobotPortrait(root)
-selected_features = robot_portrait.selected_features 
-# selected_features est recuperé de l'interface graphique, pour l'instant il est vide
-
 
 #list of the name of the 12 first images, 
 #ex:['141843.jpg', '202277.jpg', '061457.jpg', '197096.jpg', '103778.jpg', '180964.jpg', '125474.jpg', '031481.jpg', '066716.jpg', '165368.jpg', '182044.jpg', '104025.jpg']
 
-firstGen= FirstGen(selected_features,df) 
+def load_choices():
+    with open('user_choices.json', 'r') as file:
+        selected_features = json.load(file)
+    
+        if len(selected_features) != df.shape[1]:
+            selected_features = np.tile(selected_features, df.shape[1] // len(selected_features) + 1)[:df.shape[1]]
+
+    return selected_features
+
+selected_features = load_choices()
+firstGen = FirstGen(selected_features, df)
+print(firstGen)  # Affiche les 12 images générées
 
 
 

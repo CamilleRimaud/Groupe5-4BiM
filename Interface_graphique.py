@@ -5,6 +5,7 @@ from PIL import Image, ImageTk
 import os
 import random
 import json
+import subprocess
 
 class RobotPortrait:
     def __init__(self, root):
@@ -34,8 +35,7 @@ class RobotPortrait:
         self.canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
 
         self.scrollable_frame.bind(
-            "<Configure>", lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all"))
-        )
+            "<Configure>", lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all")))
 
         self.create_widgets()
 
@@ -79,7 +79,7 @@ class RobotPortrait:
         self.frame_portraits.pack()
 
         # Best choice zone
-        self.label_selected = tk.Label(self.root, text="Portrait le plus proche :", font=("Arial", 12), bg="#eefbfb", fg="#722f37")
+        self.label_selected = tk.Label(self.root, text="More accurate portrait :", font=("Arial", 12), bg="#eefbfb", fg="#722f37")
         self.label_selected.pack()
         
         self.canvas_selected = tk.Canvas(self.root, width=128, height=128, bg="#d9f6f6")
@@ -118,14 +118,41 @@ class RobotPortrait:
         # Delete old portraits
         for widget in self.frame_portraits.winfo_children():
             widget.destroy()
+            
+        try:
+            result = subprocess.run(["python3", "firstGen.py", "user_choices.json"], capture_output=True, text=True)
 
-        # random selection
-        self.current_portraits = random.sample(self.all_images, min(12, len(self.all_images)))
-        self.portrait_buttons = []
+            if result.returncode != 0:
+                print (f"Error while generating images. stderr: {result.stderr}")
+                tk.messagebox.showerror("Error", f"Error while generating images: {result.stderr}")
+                return
+        
+            print(result.stdout)
+            
+            image_names = result.stdout.strip()[1:-1].split(", ")
+            
+            image_paths = [f"{img_name.strip()[1:-1]}" for img_name in image_names]
+            
+            print(image_paths)
+            
+            self.display_images(image_paths)
+        
+        except Exception as e:
+            print(f"An exception occurred: {e}")
+            tk.messagebox.showerror("Exception", f"An error occurred: {e}")
+        
+        finally:
+            
+            pass
 
-        for i, img_name in enumerate(self.current_portraits):
-            img_path = os.path.join(self.image_folder, img_name)
-            img = Image.open(img_path).resize((128, 128))
+    def display_images(self, image_paths):
+        for widget in self.frame_portraits.winfo_children():
+            widget.destroy()
+        
+            self.portrait_buttons = []
+
+        for i, img_name in enumerate(image_paths):
+            img = Image.open(os.path.join(self.image_folder, img_name)).resize((128, 128))
             img_tk = ImageTk.PhotoImage(img)
 
             btn = tk.Button(self.frame_portraits, image=img_tk, command=lambda p=img_name: self.select_portrait(p))
