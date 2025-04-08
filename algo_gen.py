@@ -1,6 +1,5 @@
 
 ## import libraries
-import keras
 import random as rd
 import numpy as np
 
@@ -95,36 +94,6 @@ def mutation(face, mutation_strength=1):
 # generation new pop
 #genration n =10 faces
 #user selects 4
-
-'''
-attribute_table = AttributeTable('./list_attr_celeba.txt')
-table=attribute_table.get_table()
-face1= dict(zip(table[0], [int(i) for i in table[1]]))
-face2= dict(zip(table[0], [int(i) for i in table[2]]))
-face3= dict(zip(table[0], [int(i) for i in table[3]]))
-face4= dict(zip(table[0],[int(i) for i in table[4]]))
-
-
-cvae = CVAE(encoder, decoder, variational=True) # variational=False si on ne veut pas la partie variationelle
-
-cvae.latent_vectors_history = []  # Initialiser l'historique des vecteurs latents
-
-# Créer une instance du callback
-latent_space_callback = LatentSpaceVisualizationCallback()
-
-# Compiler et entraîner le modèle
-cvae.compile(optimizer=keras.optimizers.Adam(clipnorm=1.0))
-cvae.fit(x_t, epochs=100, batch_size=32)
-
-img=data[0:4]
-V, _, _ = cvae.encoder.predict(img, batch_size=32)
-
-face1=V[0]
-face2=V[1]
-face3=V[2]
-face4=V[3]
-
-
 
 
 crossFace1,crossFace2,crossFace3,crossFace4,crossFace5,crossFace6=crossover(face1, face2, face3, face4)
