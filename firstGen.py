@@ -106,27 +106,46 @@ def FirstGen(selected_features, df):
     closest_index = np.argsort(hamming_distances)[:12] #takes the 12 index of image closest to selected_features
     firstGen=images[closest_index] # name of the 12 image based on the index above
     return list(firstGen)
+
+
+def getUserDescription(attr_chosed):
+    '''
+    
+
+    Parameters
+    ----------
+    attr_chosed : list of string of the attributes chosed by the user
+
+    Returns
+    -------
+    user_description : list of 1 and -1 according to whether the attributes was chosen or not
+    
+    
+
+    '''
+    allAttr=sorted(["Male", "Pale-skin", "Eyeglasses", "Gray Hair", "Blond Hair", "Black Hair", "Brown Hair", "Bald", "Straight Hair", "Wavy Hair", "No Beard", "Mustache", "Goatee"])
+    user_description=[]
+    for attr in allAttr:
+        if attr in attr_chosed:
+            user_description.append(1)
+        else:
+            user_description.append(-1)
+    return user_description
     
 #main
 
 df=aFewModifications(createDataframe("list_attr_celeba.txt"))[:501] # we only keep the 500 first images of the dataset 
 root = tk.Tk()
 robot_portrait = RobotPortrait(root)
-
+attr_chosed = robot_portrait.selected_features 
+user_description= getUserDescription(attr_chosed)
 #list of the name of the 12 first images, 
 #ex:['141843.jpg', '202277.jpg', '061457.jpg', '197096.jpg', '103778.jpg', '180964.jpg', '125474.jpg', '031481.jpg', '066716.jpg', '165368.jpg', '182044.jpg', '104025.jpg']
 
-def load_choices():
-    with open('user_choices.json', 'r') as file:
-        selected_features = json.load(file)
-    
-        if len(selected_features) != df.shape[1]:
-            selected_features = np.tile(selected_features, df.shape[1] // len(selected_features) + 1)[:df.shape[1]]
 
-    return selected_features
 
-selected_features = load_choices()
-firstGen = FirstGen(selected_features, df)
+
+firstGen = FirstGen(user_description, df)
 print(firstGen)  # Affiche les 12 images générées
 
 
