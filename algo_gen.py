@@ -2,9 +2,8 @@
 ## import libraries
 import keras
 import random as rd
-from traitement_donnees import AttributeTable
+#from traitement_donnees import AttributeTable
 import numpy as np
-from CVAE_sans_labels import CVAE, encoder, decoder, LatentSpaceVisualizationCallback, x_t, data, attributes
 
 # initialize pop
 #fait par le décodeur
@@ -105,7 +104,7 @@ face1= dict(zip(table[0], [int(i) for i in table[1]]))
 face2= dict(zip(table[0], [int(i) for i in table[2]]))
 face3= dict(zip(table[0], [int(i) for i in table[3]]))
 face4= dict(zip(table[0],[int(i) for i in table[4]]))
-'''
+
 
 cvae = CVAE(encoder, decoder, variational=True) # variational=False si on ne veut pas la partie variationelle
 
@@ -145,3 +144,4 @@ mutant9=mutation(crossFace3)
 mutant10=mutation(crossFace4)
 mutant11=mutation(crossFace5)
 mutant12=mutation(crossFace6)
+'''
