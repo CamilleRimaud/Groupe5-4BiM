@@ -109,7 +109,7 @@ def FirstGen(selected_features, df):
     
 #main
 
-df=aFewModifications(createDataframe("list_attr_celeba.txt"))
+df=aFewModifications(createDataframe("list_attr_celeba.txt"))[:501] # we only keep the 500 first images of the dataset 
 root = tk.Tk()
 robot_portrait = RobotPortrait(root)
 
