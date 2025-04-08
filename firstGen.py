@@ -123,7 +123,19 @@ def getUserDescription(attr_chosed):
     
 
     '''
-    allAttr=sorted(["Male", "Pale-skin", "Eyeglasses", "Gray Hair", "Blond Hair", "Black Hair", "Brown Hair", "Bald", "Straight Hair", "Wavy Hair", "No Beard", "Mustache", "Goatee"])
+    allAttr=sorted(["Male",
+             "Pale_Skin",
+             "Eyeglasses" ,
+             "Gray_Hair",
+             "Blond_Hair",
+             "Black_Hair",
+             "Brown_Hair",
+            "Bald",
+            "Straight_Hair",
+            "Wavy_Hair",
+            "No_Beard",
+            "Mustache",
+            "Goatee"])
     user_description=[]
     for attr in allAttr:
         if attr in attr_chosed:
