@@ -4,30 +4,20 @@
 from tensorflow import keras
 import matplotlib.pyplot as plt
 import numpy as np
-from CVAE_sans_labels import CVAE, encoder, decoder, LatentSpaceVisualizationCallback, x_t, data
+from keras.models import load_model
 from algo_gen import crossover, mutation
 from Interface_graphique import RobotPortrait, root
 
-# initialisation du modèle
-
-# Créer le modèle CVAE
-cvae = CVAE(encoder, decoder, variational=True) # variational=False si on ne veut pas la partie variationelle
-
-cvae.latent_vectors_history = []  # Initialiser l'historique des vecteurs latents
-
-# Créer une instance du callback
-latent_space_callback = LatentSpaceVisualizationCallback()
-
-# Compiler et entraîner le modèle
-cvae.compile(optimizer=keras.optimizers.Adam(clipnorm=1.0))
-cvae.fit(x_t, epochs=100, batch_size=32)
+# récupération du modèle
+encoder = load_model("encoder_model.keras", compile=False)
+decoder = load_model("decoder_model.keras", compile=False)
 
 
 #génération d'un vecteur latent
 images_originales= RobotPortrait(root).select_portrait() # il faudra mettre le choix de l'user
 
 #calcul vecteurs latents
-V, _, _ = cvae.encoder.predict(images_originales, batch_size=32)
+V, _, _ = encoder.predict(images_originales, batch_size=32)
 
 ### rentre en jeu l'algo gen
 crossFace1,crossFace2,crossFace3,crossFace4,crossFace5,crossFace6 = crossover(V[0], V[1], V[2], V[3])
@@ -50,7 +40,7 @@ mutatedV=np.array([mutant1,mutant2,mutant3,mutant4,mutant5,mutant6,
                   mutant7,mutant8, mutant9, mutant10, mutant11, mutant12])
 
 # reconstruction nouvelles images avec vecteurs latents mutés
-nouvelles_images = cvae.decoder.predict([mutatedV])
+nouvelles_images = decoder.predict([mutatedV])
 
 #affichage à envoyer dans l'interface
 
