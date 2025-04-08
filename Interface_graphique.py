@@ -7,6 +7,7 @@ import random
 import json
 import subprocess
 import ast
+from link import newImages
 
 class RobotPortrait:
     def __init__(self, root):
@@ -156,9 +157,12 @@ class RobotPortrait:
         
             #self.portrait_buttons = []
 
-        for i, img_name in enumerate(image_paths):
-            img = Image.open(os.path.join(self.image_folder, img_name)).resize((128, 128))
-            img_tk = ImageTk.PhotoImage(img)
+        #for i, img_name in enumerate(image_paths):
+            #img = Image.open(os.path.join(self.image_folder, img_name)).resize((128, 128))
+            #img_tk = ImageTk.PhotoImage(img)
+
+        for i in Img :
+            img_tk = ImageTk.PhotoImage(i)
 
             btn = tk.Button(self.frame_portraits, image=img_tk, command=lambda p=img_name: self.select_portrait(p))
             btn.image = img_tk
@@ -184,6 +188,8 @@ class RobotPortrait:
         img_tk = ImageTk.PhotoImage(img_resized)
         self.canvas_selected.create_image(64, 64, image=img_tk)
         self.canvas_selected.image = img_tk
+        
+        Img = newImages(self.select_portrait())       
 
     def final_choice(self):
         self.history.append(self.selected_portraits.copy())
