@@ -63,7 +63,9 @@ class RobotPortrait:
         self.frame_choices = tk.Frame(self.root, bg="#eefbfb")
         self.frame_choices.pack()
 
-        self.choices = ["Male", "Pale-skin", "Eyeglasses", "Gray Hair", "Blond Hair", "Black Hair", "Brown Hair", "Bald", "Straight Hair", "Wavy Hair", "No Beard", "Mustache", "Goatee"]	#simple liste test
+        self.choices = ["Male", "Pale-skin", "Eyeglasses", "Gray Hair", "Blond Hair", "Black Hair", "Brown Hair", "Bald", "Straight Hair", "Wavy Hair", "No Beard", "Mustache", "Goatee"]
+        self.choices = sorted(self.choices)
+        print (self.choices)
         self.check_vars = {choices: tk.IntVar() for choices in self.choices}   #plutôt flou
 
         for choices in self.choices:
@@ -127,11 +129,10 @@ class RobotPortrait:
                 tk.messagebox.showerror("Error", f"Error while generating images: {result.stderr}")
                 return
         
-            print(result.stdout)
             
-            image_names = result.stdout.strip()[1:-1].split(", ")
+            image_names = result.stdout.strip().splitlines()
             
-            image_paths = [f"{img_name.strip()[1:-1]}" for img_name in image_names]
+            image_paths = [f"{img_name.strip()}" for img_name in image_names]
             
             print(image_paths)
             
