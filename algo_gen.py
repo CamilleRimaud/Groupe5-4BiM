@@ -2,7 +2,6 @@
 ## import libraries
 import keras
 import random as rd
-#from traitement_donnees import AttributeTable
 import numpy as np
 
 # initialize pop
