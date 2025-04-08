@@ -101,7 +101,7 @@ def FirstGen(selected_features, df):
 
     '''
     images= df.index #name of the images
-    allImages=np.array(df.values.tolist()) #array of the list of the values of each image
+    allImages=df.values #array of the list of the values of each image
     hamming_distances = np.sum(allImages != selected_features, axis=1) #calculate distance between each image and selected features
     closest_index = np.argsort(hamming_distances)[:12] #takes the 12 index of image closest to selected_features
     firstGen=images[closest_index] # name of the 12 image based on the index above
