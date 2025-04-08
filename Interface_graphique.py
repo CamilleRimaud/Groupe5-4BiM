@@ -6,6 +6,7 @@ import os
 import random
 import json
 import subprocess
+import ast
 
 class RobotPortrait:
     def __init__(self, root):
@@ -18,6 +19,7 @@ class RobotPortrait:
         self.selected_features = []
         self.selected_portraits = []
         self.current_portraits = []
+        self.portrait_buttons = []
         self.history = []  #if we want to come back
 
         # Save test portraits
@@ -63,9 +65,8 @@ class RobotPortrait:
         self.frame_choices = tk.Frame(self.root, bg="#eefbfb")
         self.frame_choices.pack()
 
-        self.choices = ["Male", "Pale-skin", "Eyeglasses", "Gray Hair", "Blond Hair", "Black Hair", "Brown Hair", "Bald", "Straight Hair", "Wavy Hair", "No Beard", "Mustache", "Goatee"]
+        self.choices = ["Male", "Pale_skin", "Eyeglasses", "Gray_Hair", "Blond_Hair", "Black_Hair", "Brown_Hair", "Bald", "Straight_Hair", "Wavy_Hair", "No_Beard", "Mustache", "Goatee"]
         self.choices = sorted(self.choices)
-        print (self.choices)
         self.check_vars = {choices: tk.IntVar() for choices in self.choices}   #plutôt flou
 
         for choices in self.choices:
@@ -109,6 +110,7 @@ class RobotPortrait:
         if not self.selected_features:
             tk.messagebox.showwarning(title="Warning !!", message="Choose at least 1 feature.")
             return
+        print (self.selected_features)
 
         #Save choices in a file
         self.save_choices()
@@ -122,7 +124,7 @@ class RobotPortrait:
             widget.destroy()
             
         try:
-            result = subprocess.run(["python3", "firstGen.py", "user_choices.json"], capture_output=True, text=True)
+            result = subprocess.run(["python3", "firstGen.py"], capture_output=True, text=True)
 
             if result.returncode != 0:
                 print (f"Error while generating images. stderr: {result.stderr}")
@@ -130,9 +132,11 @@ class RobotPortrait:
                 return
         
             
-            image_names = json.loads(result.stdout.strip().splitlines())
+            image_names = json.loads(result.stdout.strip())
             
-            image_paths = [f"{img_name.strip()}" for img_name in image_names]
+            #image_directory = "data_sample" 
+            image_paths = [os.path.join(img_name) for img_name in image_names]
+
             
             print(image_paths)
             
@@ -150,7 +154,7 @@ class RobotPortrait:
         for widget in self.frame_portraits.winfo_children():
             widget.destroy()
         
-            self.portrait_buttons = []
+            #self.portrait_buttons = []
 
         for i, img_name in enumerate(image_paths):
             img = Image.open(os.path.join(self.image_folder, img_name)).resize((128, 128))

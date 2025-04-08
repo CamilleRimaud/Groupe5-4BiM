@@ -165,8 +165,4 @@ user_description= getUserDescription(attr_chosed)
 
 
 results = FirstGen(user_description, df)
-print(json.dumps(results))
-
-
-
-
+print (json.dumps(results))
