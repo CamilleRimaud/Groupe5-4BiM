@@ -143,23 +143,29 @@ def getUserDescription(attr_chosed):
         else:
             user_description.append(-1)
     return user_description
-    
+
+def load_choices():
+     with open('user_choices.json', 'r') as file:
+         selected_features = json.load(file)
+     
+         if len(selected_features) != df.shape[1]:
+             selected_features = np.tile(selected_features, df.shape[1] // len(selected_features) + 1)[:df.shape[1]]
+ 
+     return selected_features
+
 #main
 
 df=aFewModifications(createDataframe("list_attr_celeba.txt"))[:501] # we only keep the 500 first images of the dataset 
 root = tk.Tk()
 robot_portrait = RobotPortrait(root)
-attr_chosed = robot_portrait.selected_features 
+attr_chosed =load_choices() 
 user_description= getUserDescription(attr_chosed)
 #list of the name of the 12 first images, 
 #ex:['141843.jpg', '202277.jpg', '061457.jpg', '197096.jpg', '103778.jpg', '180964.jpg', '125474.jpg', '031481.jpg', '066716.jpg', '165368.jpg', '182044.jpg', '104025.jpg']
 
 
-
-
-firstGen = FirstGen(user_description, df)
-print(firstGen)  # Affiche les 12 images générées
-
+results = FirstGen(user_description, df)
+print(json.dumps(results))
 
 
 
