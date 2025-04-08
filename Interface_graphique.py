@@ -130,7 +130,7 @@ class RobotPortrait:
                 return
         
             
-            image_names = result.stdout.strip().splitlines()
+            image_names = json.loads(result.stdout.strip().splitlines())
             
             image_paths = [f"{img_name.strip()}" for img_name in image_names]
             
