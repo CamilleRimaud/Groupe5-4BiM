@@ -95,7 +95,7 @@ def mutation(face, mutation_strength=1):
 #genration n =10 faces
 #user selects 4
 
-
+'''
 crossFace1,crossFace2,crossFace3,crossFace4,crossFace5,crossFace6=crossover(face1, face2, face3, face4)
 
 

@@ -45,19 +45,19 @@ class RobotPortrait:
     def create_widgets(self):
         # create all widgets
         self.main_page_widg()
-    
+
     def main_page_widg(self):
         self.title_label = tk.Label(self.root, text="Welcome to your Robot Portrait Generator", font=("Baskerville", 24), bg="#eefbfb", fg="#722f37")
         self.title_label.pack(pady=20)
 
         self.start_button = tk.Button(self.root, text="Start", command=self.portrait_generator, font=("Baskerville", 15))
         self.start_button.pack(pady=20)
-        
+
     def portrait_generator(self):
         # Remove home page widgets
         self.title_label.pack_forget()
         self.start_button.pack_forget()
-        
+
         # Title with instruction
         self.label_instruction = tk.Label(self.root, text="Choose the 4 most look-alike portraits by clinking on it.", font=("Baskerville", 12), bg="#eefbfb", fg="#722f37")
         self.label_instruction.pack(pady=10)
@@ -85,20 +85,20 @@ class RobotPortrait:
         # Best choice zone
         self.label_selected = tk.Label(self.root, text="More accurate portrait :", font=("Arial", 12), bg="#eefbfb", fg="#722f37")
         self.label_selected.pack()
-        
+
         self.canvas_selected = tk.Canvas(self.root, width=128, height=128, bg="#d9f6f6")
         self.canvas_selected.pack(pady=10)
 
         # Buttons to move on
         self.frame_btn = tk.Frame(self.root, bg="#f0f0f0")
         self.frame_btn.pack(pady=10)
-        
+
         self.btn_back = tk.Button(self.frame_btn, text="Return looooser !", command=self.previous_step, state=tk.DISABLED, bg="#623a00", fg="white", font=("Baskerville", 10, "bold"))
         self.btn_back.pack(side=tk.LEFT, padx=10)
-        
+
         self.btn_next = tk.Button(self.frame_btn, text="Thank you, Next !", command=self.next_step, state=tk.DISABLED, bg="#401740", fg="white", font=("Baskerville", 10, "bold"))
         self.btn_next.pack(side=tk.RIGHT, padx=10)
-        
+
         self.frame_right = tk.Frame(self.root, bg="#eefbfb")  # New frame for right alignment
         self.frame_right.pack(side=tk.RIGHT, padx=20)
 
@@ -123,7 +123,7 @@ class RobotPortrait:
         # Delete old portraits
         for widget in self.frame_portraits.winfo_children():
             widget.destroy()
-            
+
         try:
             result = subprocess.run(["python3", "firstGen.py"], capture_output=True, text=True)
 
@@ -131,30 +131,30 @@ class RobotPortrait:
                 print (f"Error while generating images. stderr: {result.stderr}")
                 tk.messagebox.showerror("Error", f"Error while generating images: {result.stderr}")
                 return
-        
-            
+
+
             image_names = json.loads(result.stdout.strip())
-            
-            #image_directory = "data_sample" 
+
+            #image_directory = "data_sample"
             image_paths = [os.path.join(img_name) for img_name in image_names]
 
-            
+
             print(image_paths)
-            
+
             self.display_images(image_paths)
-        
+
         except Exception as e:
             print(f"An exception occurred: {e}")
             tk.messagebox.showerror("Exception", f"An error occurred: {e}")
-        
+
         finally:
-            
+
             pass
 
     def display_images(self, image_paths):
         for widget in self.frame_portraits.winfo_children():
             widget.destroy()
-        
+
             #self.portrait_buttons = []
 
         #for i, img_name in enumerate(image_paths):
@@ -188,18 +188,18 @@ class RobotPortrait:
         img_tk = ImageTk.PhotoImage(img_resized)
         self.canvas_selected.create_image(64, 64, image=img_tk)
         self.canvas_selected.image = img_tk
-        
-        Img = newImages(self.select_portrait())       
+
+        Img = newImages(self.select_portrait())
 
     def final_choice(self):
         self.history.append(self.selected_portraits.copy())
-        
+
         for widget in self.root.winfo_children():
             widget.destroy()
-            
+
         final_message=tk.Label(self.root, text="Your final chosen portrait!", font=("Baskerville", 24), bg="#eefbfb", fg="#722f37")
         final_message.pack(pady=20)
-        
+
         final_portrait_path = os.path.join(self.image_folder, self.selected_portraits[0])
         img = Image.open(final_portrait_path).resize((300, 300))
         img_tk = ImageTk.PhotoImage(img)
@@ -232,7 +232,7 @@ class RobotPortrait:
         with open('user_choices.json', 'w') as file:
             json.dump(self.selected_features, file)
         print("Choices saved")
-        
+
     def load_choices(self):    #from a json file
         if os.path.exists('user_choices.json'):
             with open('user_choices.json', 'r') as file:
@@ -245,4 +245,3 @@ if __name__ == "__main__":
     root = tk.Tk()
     app = RobotPortrait(root)
     root.mainloop()
-

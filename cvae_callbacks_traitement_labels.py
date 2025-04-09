@@ -24,13 +24,13 @@ from keras.callbacks import TensorBoard
 from PIL import Image
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.model_selection import train_test_split
-
+"""
 # Connexion Google Drive
 from google.colab import drive
 drive.mount('/content/drive')
 
 cd drive/MyDrive/Colab Notebooks/data_sample_10000
-
+"""
 def format_img(id):
     '''
 
@@ -45,7 +45,7 @@ def format_img(id):
 
     '''
      # Load the image and turn it into a numpy array
-    image = Image.open(f'./{id}.jpg')
+    image = Image.open(f'./data_sample/{id}.jpg')
 
     """
     #Size of the original image
@@ -86,7 +86,7 @@ def import_data(nb_img):
   data=data/255
 
   return data
-
+"""
 nb_img=500
 data=import_data(nb_img)
 
@@ -128,7 +128,7 @@ def get_corresponding_data(nb_img, my_index): # à supprimer
   return genre
 
 genre=get_corresponding_data(nb_img, my_index) # à supprimer
-
+"""
 from keras import Model, Input
 
 def build_encoder(input_shape=(128, 128, 3)):
@@ -367,6 +367,7 @@ class GenerateImageCallback(tf.keras.callbacks.Callback):
             plt.show()
 
 latent_dim = 32  #  latent space dimension
+"""
 encoder = build_encoder(input_shape=(128, 128, 3))
 decoder = build_decoder(output_shape=(128, 128, 3))
 encoder.summary()
@@ -403,7 +404,7 @@ plt.legend()
 plt.title("CVAE Loss over Epochs")
 plt.show()
 
-"""total loss, reconstruction loss et KL loss convergent rapidement et sont stables."""
+total loss, reconstruction loss et KL loss convergent rapidement et sont stables.
 
 # Save the model for future usage (encoder, decoder)
 encoder.save_weights("encoder.weights.h5")
@@ -422,11 +423,9 @@ z_sample = tf.random.normal(shape=(1, latent_dim))
 img = data[random.randint(1,500)]
 img = tf.expand_dims(img, axis=0)
 z_img, _, _ = enc([img], training=False)
-predict = tf.random.normal(shape=(1, latent_dim))
 
 generated_sample = dec([z_sample], training=False)
 generated_img = dec([z_img], training=False)
-pred = dec.predict([predict])
 
 sample_np = generated_sample[0].numpy()
 img_np = generated_img[0].numpy()
@@ -437,16 +436,13 @@ plt.title("Sample")
 plt.imshow(sample_np)
 plt.axis('off')
 
-plt.subplot(1, 3, 2)
-plt.title("Predict")
-plt.imshow(pred[0])
-plt.axis('off')
-
 plt.subplot(1, 3, 3)
 plt.title("Image")
 plt.imshow(img_np)
 plt.axis('off')
 plt.show()
+
+'''
 
 z_mean, _, _, _ = encoder.predict([x_test, y_test], batch_size=32)
 
@@ -477,7 +473,7 @@ plt.grid(True)
 plt.show()
 
 """# The gender clusters are not well seperated, but I tried to generate male/female images and it seems to be not bad..."""
-
+"""
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -503,3 +499,4 @@ plt.title("Female")
 plt.imshow(img_female[0])
 plt.axis('off')
 plt.show()
+"""
