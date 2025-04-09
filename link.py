@@ -6,8 +6,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 from keras.models import load_model
 from algo_gen import crossover, mutation
-from Interface_graphique import RobotPortrait, root
-
 
 def newImages(imgOg):
     V, _, _ = encoder.predict(imgOg, batch_size=32)
