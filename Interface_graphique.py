@@ -41,6 +41,7 @@ class RobotPortrait:
             "<Configure>", lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all")))
 
         self.create_widgets()
+        self.firstGen # booléen True si on est à la premiere génération, False sinon (en théorie) à voir si on garde
 
     def create_widgets(self):
         # create all widgets
@@ -140,7 +141,7 @@ class RobotPortrait:
 
 
             print(image_paths)
-
+            self.firstGen= True
             self.display_images(image_paths)
 
         except Exception as e:
@@ -157,12 +158,15 @@ class RobotPortrait:
 
             #self.portrait_buttons = []
 
-        #for i, img_name in enumerate(image_paths):
-            #img = Image.open(os.path.join(self.image_folder, img_name)).resize((128, 128))
-            #img_tk = ImageTk.PhotoImage(img)
+        for i, img_name in enumerate(image_paths):
+            if self.firstGen:
+                img = Image.open(os.path.join(self.image_folder, img_name)).resize((128, 128))
+                img_tk = ImageTk.PhotoImage(img)
+            else:
+                img_tk = ImageTk.PhotoImage(img_name)
 
-        for i in Img :
-            img_tk = ImageTk.PhotoImage(i)
+        #for i in Img :
+            #img_tk = ImageTk.PhotoImage(i)
 
             btn = tk.Button(self.frame_portraits, image=img_tk, command=lambda p=img_name: self.select_portrait(p))
             btn.image = img_tk
@@ -190,6 +194,9 @@ class RobotPortrait:
         self.canvas_selected.image = img_tk
 
         Img = newImages(self.select_portrait())
+        #lignes rajoutées 
+        self.firstGen=False
+        self.display_images(Img)
 
     def final_choice(self):
         self.history.append(self.selected_portraits.copy())
