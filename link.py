@@ -10,7 +10,7 @@ from cvae_callbacks_traitement_labels import build_decoder, build_encoder, impor
 from PIL import Image
 import tensorflow as tf
 
-def newImages(imgOg):
+def newImages(images_originales):
     # calcul des vecteurs latents
     V, _, _ = enc(images_originales, training=False)
 
@@ -38,30 +38,6 @@ def newImages(imgOg):
     nouvelles_images = dec([mutatedV], training=False)
     return nouvelles_images
 
-
-
-# récupération du modèle
-# Construire 2 nouveaux encoder/decoder
-enc = build_encoder(input_shape=(128,128,3))
-dec = build_decoder(output_shape=(128,128,3))
-
-# Ajouter les poids aux modèles
-enc.load_weights("encoder.weights.h5")
-dec.load_weights("decoder.weights.h5")
-
-
-
-
-# C'est juste pour produire images_originales, ce sera à modifier
-nb_img=500
-data=import_data(nb_img)
-images_originales=data[0:4]
-#images_originales= RobotPortrait(root).select_portrait() # il faudra mettre le choix de l'user
-
-nouvelles_images=newImages(images_originales)
-
-
-
 def conversion_tensor_to_PIL(nouvelles_images):
     PIL_img=[]
     for img in nouvelles_images:
@@ -79,6 +55,31 @@ def conversion_tensor_to_PIL(nouvelles_images):
         PIL_img.append(image)
     return PIL_img
 
+
+# récupération du modèle
+# Construire 2 nouveaux encoder/decoder
+enc = build_encoder(input_shape=(128,128,3))
+dec = build_decoder(output_shape=(128,128,3))
+
+# Ajouter les poids aux modèles
+enc.load_weights("encoder.weights.h5")
+dec.load_weights("decoder.weights.h5")
+
+"""
+loaded = np.load("processed_faces_50000.npz")
+data=loaded["data"]
+
+data=data.astype('float32')/255.0
+print("Data shape", data.shape)
+"""
+
+
+data=import_data(nb_img)
+images_originales=data[0:4]
+print(images_originales.shape)
+#images_originales= RobotPortrait(root).select_portrait() # il faudra mettre le choix de l'user
+
+nouvelles_images=newImages(images_originales)
 PIL_img=conversion_tensor_to_PIL(nouvelles_images)
 
 """
