@@ -7,7 +7,7 @@ import random
 import json
 import subprocess
 import ast
-from link import newImages
+from link import newImages, conversion_tensor_to_PIL
 import numpy as np
 
 class RobotPortrait:
@@ -177,7 +177,7 @@ class RobotPortrait:
                 btn.grid(row=i // 4, column=i % 4, padx=5, pady=5)
                 self.portrait_buttons.append(btn)
             else:
-                print("Bien rentrée!")
+                #print("Bien rentrée!")
                 img_tk = ImageTk.PhotoImage(img_name)
                 btn = tk.Button(self.frame_portraits, image=img_tk, command=lambda p=img_name: self.select_portrait(p))
                 btn.image = img_tk
@@ -215,7 +215,9 @@ class RobotPortrait:
         self.canvas_selected.image = img_tk
         
         print("j'ai choisi mes images!")
-        
+        nouvelles_images=newImages(self.selected_portraits)
+        PIL_img=conversion_tensor_to_PIL(nouvelles_images)
+        '''
         Img = newImages(self.selected_portraits) 
         #self.firstGen=False
         newImg=[]
@@ -229,7 +231,8 @@ class RobotPortrait:
 
             img_pil = Image.fromarray(img_array)
             newImg.append(img_pil)
-        self.display_images(newImg, boole=False)
+        '''
+        self.display_images(PIL_img, boole=False)
 
     def final_choice(self):
         self.history.append(self.selected_portraits.copy())
