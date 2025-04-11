@@ -5,11 +5,11 @@ import os
 def format_img(id):
     """
     For resizing the images to 128*128
-    
-    Args: 
+
+    Args:
         Id of image.
-    
-    Returns: 
+
+    Returns:
         The Numpy array corresponding to the image.
     """
     image = Image.open(f'./{id}.jpg')
@@ -38,9 +38,11 @@ def import_data(nb_img):
     print("Shape:", data.shape)
     return data
 
+"""
 # Import the first 50000 images
 data = import_data(1000)
 
 # Save as Numpy compressed file
 np.savez_compressed("processed_faces_50000.npz", data=data)
 print("Transformed images saved as: processed_faces_50000.npz")
+"""
