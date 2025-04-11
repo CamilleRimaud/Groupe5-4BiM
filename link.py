@@ -7,6 +7,8 @@ import numpy as np
 from keras.models import load_model
 from algo_gen import crossover, mutation
 from cvae_callbacks_traitement_labels import build_decoder, build_encoder, import_data, format_img
+from PIL import Image
+import tensorflow as tf
 
 def newImages(imgOg):
     # calcul des vecteurs latents
@@ -59,29 +61,60 @@ images_originales=data[0:4]
 nouvelles_images=newImages(images_originales)
 
 
+
+def conversion_tensor_to_PIL(nouvelles_images):
+    PIL_img=[]
+    for img in nouvelles_images:
+        # Etape 0 : récupère un tensor normalisé entre 0 et 1
+        eager_tensor=img
+
+        # Étape 1 : convertit le tensor en numpy
+        np_array = eager_tensor.numpy()
+
+        # Étape 2 : remet les valeurs entre 0 et 255
+        np_array = (np_array * 255).astype(np.uint8)
+
+        # Étape 3 : crée l’image
+        image = Image.fromarray(np_array)
+        PIL_img.append(image)
+    return PIL_img
+
+PIL_img=conversion_tensor_to_PIL(nouvelles_images)
+
+"""
+plt.subplot(2, 2, 1)
+plt.title("Nouveau portrait 1")
+plt.imshow(nouvelles_images[0])
+plt.axis('off')
+plt.show()
+
+
+images_originales_bis=nouvelles_images[0:4]
+nouvelles_images_bis=newImages(images_originales_bis)
+
 #affichage à envoyer dans l'interface
 
 plt.subplot(2, 2, 1)
 plt.title("Nouveau portrait 1")
-plt.imshow(nouvelles_images[0])
+plt.imshow(nouvelles_images_bis[0])
 plt.axis('off')
 
 
 plt.subplot(2, 2, 2)
 plt.title("Nouveau portrait 2")
-plt.imshow(nouvelles_images[1])
+plt.imshow(nouvelles_images_bis[1])
 plt.axis('off')
 
 
 plt.subplot(2, 2, 3)
 plt.title("Nouveau portrait 3")
-plt.imshow(nouvelles_images[2])
+plt.imshow(nouvelles_images_bis[2])
 plt.axis('off')
 
 
 plt.subplot(2, 2, 4)
 plt.title("Nouveau portrait 4")
-plt.imshow(nouvelles_images[3])
+plt.imshow(nouvelles_images_bis[3])
 plt.axis('off')
 plt.show()
 
@@ -128,3 +161,4 @@ plt.title("Nouveau portrait 12")
 plt.imshow(nouvelles_images[11])
 plt.axis('off')
 plt.show()
+"""
