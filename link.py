@@ -13,7 +13,14 @@ from img_preprocessing import import_data, format_img
 
 def newImages(images_originales):
     # calcul des vecteurs latents
-    V, _, _ = enc(images_originales, training=False)
+    image_tensor = []
+    for img in images_originales:
+        img_array = np.array(img)  # Convertit PIL Image en tableau NumPy
+        img_tensor = tf.convert_to_tensor(img_array, dtype=tf.float32)  # Convertit en TensorFlow tensor
+        image_tensor.append(img_tensor)
+    
+    image_tensor = np.array(image_tensor)
+    V, _, _ = enc(image_tensor, training=False)
 
     ### Algo gen
 
@@ -76,5 +83,5 @@ images_originales=data[0:4]
 """
 #images_originales= RobotPortrait(root).select_portrait() # il faudra mettre le choix de l'user
 
-nouvelles_images=newImages(images_originales)
-PIL_img=conversion_tensor_to_PIL(nouvelles_images)
+#nouvelles_images=newImages(images_originales)
+#PIL_img=conversion_tensor_to_PIL(nouvelles_images)
