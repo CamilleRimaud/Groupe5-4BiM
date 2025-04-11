@@ -6,9 +6,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 from keras.models import load_model
 from algo_gen import crossover, mutation
-from cvae_callbacks_traitement_labels import build_decoder, build_encoder, import_data, format_img
+from cvae_callbacks_traitement_labels import build_decoder, build_encoder
 from PIL import Image
 import tensorflow as tf
+from img_preprocessing import import_data, format_img
 
 def newImages(images_originales):
     # calcul des vecteurs latents
@@ -62,104 +63,18 @@ enc = build_encoder(input_shape=(128,128,3))
 dec = build_decoder(output_shape=(128,128,3))
 
 # Ajouter les poids aux modèles
-enc.load_weights("encoder.weights.h5")
-dec.load_weights("decoder.weights.h5")
+enc.load_weights("encoder_50000.weights.h5")
+dec.load_weights("decoder_50000.weights.h5")
 
 """
-loaded = np.load("processed_faces_50000.npz")
+loaded = np.load("processed_faces_1000.npz")
 data=loaded["data"]
 
 data=data.astype('float32')/255.0
-print("Data shape", data.shape)
-"""
 
-
-data=import_data(nb_img)
 images_originales=data[0:4]
-print(images_originales.shape)
+"""
 #images_originales= RobotPortrait(root).select_portrait() # il faudra mettre le choix de l'user
 
 nouvelles_images=newImages(images_originales)
 PIL_img=conversion_tensor_to_PIL(nouvelles_images)
-
-"""
-plt.subplot(2, 2, 1)
-plt.title("Nouveau portrait 1")
-plt.imshow(nouvelles_images[0])
-plt.axis('off')
-plt.show()
-
-
-images_originales_bis=nouvelles_images[0:4]
-nouvelles_images_bis=newImages(images_originales_bis)
-
-#affichage à envoyer dans l'interface
-
-plt.subplot(2, 2, 1)
-plt.title("Nouveau portrait 1")
-plt.imshow(nouvelles_images_bis[0])
-plt.axis('off')
-
-
-plt.subplot(2, 2, 2)
-plt.title("Nouveau portrait 2")
-plt.imshow(nouvelles_images_bis[1])
-plt.axis('off')
-
-
-plt.subplot(2, 2, 3)
-plt.title("Nouveau portrait 3")
-plt.imshow(nouvelles_images_bis[2])
-plt.axis('off')
-
-
-plt.subplot(2, 2, 4)
-plt.title("Nouveau portrait 4")
-plt.imshow(nouvelles_images_bis[3])
-plt.axis('off')
-plt.show()
-
-
-plt.subplot(2, 2, 1)
-plt.title("Nouveau portrait 5")
-plt.imshow(nouvelles_images[4])
-plt.axis('off')
-
-plt.subplot(2, 2, 2)
-plt.title("Nouveau portrait 6")
-plt.imshow(nouvelles_images[5])
-plt.axis('off')
-
-plt.subplot(2, 2, 3)
-plt.title("Nouveau portrait 7")
-plt.imshow(nouvelles_images[6])
-plt.axis('off')
-
-plt.subplot(2, 2, 4)
-plt.title("Nouveau portrait 8")
-plt.imshow(nouvelles_images[7])
-plt.axis('off')
-plt.show()
-
-
-plt.subplot(2, 2, 1)
-plt.title("Nouveau portrait 9")
-plt.imshow(nouvelles_images[8])
-plt.axis('off')
-
-plt.subplot(2, 2, 2)
-plt.title("Nouveau portrait 10")
-plt.imshow(nouvelles_images[9])
-plt.axis('off')
-
-plt.subplot(2, 2, 3)
-plt.title("Nouveau portrait 11")
-plt.imshow(nouvelles_images[10])
-plt.axis('off')
-
-plt.subplot(2, 2, 4)
-plt.title("Nouveau portrait 12")
-plt.imshow(nouvelles_images[11])
-plt.axis('off')
-plt.show()
-"""
