@@ -43,7 +43,10 @@ class RobotPortrait:
 
         self.create_widgets()
         
-
+    
+        
+        
+        
     def create_widgets(self):
         # create all widgets
         self.main_page_widg()
@@ -125,25 +128,27 @@ class RobotPortrait:
         # Delete old portraits
         for widget in self.frame_portraits.winfo_children():
             widget.destroy()
-            
-        try:
-            result = subprocess.run(["python3", "firstGen.py"], capture_output=True, text=True)
-
-            if result.returncode != 0:
-                print (f"Error while generating images. stderr: {result.stderr}")
-                tk.messagebox.showerror("Error", f"Error while generating images: {result.stderr}")
-                return
+          
         
+        try:
+            if not hasattr(self, 'first_gen_images'):
+                result = subprocess.run(["python3", "firstGen.py"], capture_output=True, text=True)
+    
+                if result.returncode != 0:
+                    print (f"Error while generating images. stderr: {result.stderr}")
+                    tk.messagebox.showerror("Error", f"Error while generating images: {result.stderr}")
+                    return
             
-            image_names = json.loads(result.stdout.strip())
+                
+                image_names = json.loads(result.stdout.strip())
+                
+                #image_directory = "data_sample" 
+                image_paths = [os.path.join(img_name) for img_name in image_names]
+    
+                self.first_gen_images = image_paths
+            #print(image_paths)
             
-            #image_directory = "data_sample" 
-            image_paths = [os.path.join(img_name) for img_name in image_names]
-
-            
-            print(image_paths)
-            
-            self.display_images(image_paths, True)
+                self.display_images(image_paths, True)
         
         except Exception as e:
             print(f"An exception occurred: {e}")
@@ -152,7 +157,7 @@ class RobotPortrait:
         finally:
             
             pass
-
+        
     def display_images(self, image_paths, boole):
         for widget in self.frame_portraits.winfo_children():
             widget.destroy()
@@ -217,6 +222,7 @@ class RobotPortrait:
         print("j'ai choisi mes images!")
         nouvelles_images=newImages(self.selected_portraits)
         PIL_img=conversion_tensor_to_PIL(nouvelles_images)
+        print('PIL_img', PIL_img)
         '''
         Img = newImages(self.selected_portraits) 
         #self.firstGen=False
@@ -283,6 +289,8 @@ class RobotPortrait:
             print("Choices loaded")
         else:
             print("No such file found")
+
+
 
 if __name__ == "__main__":
     root = tk.Tk()
