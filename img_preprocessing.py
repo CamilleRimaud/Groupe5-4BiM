@@ -39,7 +39,7 @@ def import_data(nb_img):
     return data
 
 # Import the first 50000 images
-data = import_data(50000)
+data = import_data(1000)
 
 # Save as Numpy compressed file
 np.savez_compressed("processed_faces_50000.npz", data=data)
