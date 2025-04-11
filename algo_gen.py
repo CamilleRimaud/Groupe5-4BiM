@@ -2,6 +2,7 @@
 ## import libraries
 import random as rd
 import numpy as np
+import tensorflow as tf 
 
 # initialize pop
 #fait par le décodeur
@@ -39,24 +40,13 @@ def crossover(face1, face2, face3, face4):
 
 
     '''
-    crossover1_2=[]
-    crossover1_3=[]
-    crossover1_4=[]
-    crossover2_3=[]
-    crossover2_4=[]
-    crossover3_4=[]
-
-    for i in range(len(face1)):
-        val1=face1[i]
-        val2=face2[i]
-        val3=face3[i]
-        val4=face4[i]
-        crossover1_2.append(float(np.mean([val1,val2])))
-        crossover1_3.append(float(np.mean([val1,val3])))
-        crossover1_4.append(float(np.mean([val1,val4])))
-        crossover2_3.append(float(np.mean([val2,val3])))
-        crossover2_4.append(float(np.mean([val2,val4])))
-        crossover3_4.append(float(np.mean([val3,val4])))
+    
+    crossover1_2 = tf.reduce_mean(tf.stack([face1, face2]), axis=0)
+    crossover1_3 = tf.reduce_mean(tf.stack([face1, face3]), axis=0)
+    crossover1_4 = tf.reduce_mean(tf.stack([face1, face4]), axis=0)
+    crossover2_3 = tf.reduce_mean(tf.stack([face2, face3]), axis=0)
+    crossover2_4 = tf.reduce_mean(tf.stack([face2, face4]), axis=0)
+    crossover3_4 = tf.reduce_mean(tf.stack([face3, face4]), axis=0)
 
     return crossover1_2, crossover1_3, crossover1_4, crossover2_3, crossover2_4, crossover3_4
 
@@ -81,21 +71,23 @@ def mutation(face, mutation_strength=1):
     with a probability of 5%
 
     '''
-    mutantFace = face.copy()
+    
 
-    for i in range(len(face)):
-        if rd.random() < 0.05:
-            # Appliquer une mutation
-            mutation = rd.uniform(-mutation_strength, mutation_strength)
-            mutantFace[i] += mutation
-
-    return mutantFace
+    mutation_mask = tf.random.uniform(shape=face.shape) < 0.05
+    
+    mutation_values = tf.random.uniform(shape=face.shape, 
+                                        minval=-mutation_strength, 
+                                        maxval=mutation_strength)
+    
+    mutant_face = tf.where(mutation_mask, face + mutation_values, face)
+    
+    return mutant_face
 
 # generation new pop
 #genration n =10 faces
 #user selects 4
-
 '''
+
 crossFace1,crossFace2,crossFace3,crossFace4,crossFace5,crossFace6=crossover(face1, face2, face3, face4)
 
 
@@ -112,4 +104,5 @@ mutant9=mutation(crossFace3)
 mutant10=mutation(crossFace4)
 mutant11=mutation(crossFace5)
 mutant12=mutation(crossFace6)
+
 '''
