@@ -42,9 +42,7 @@ class RobotPortrait:
             "<Configure>", lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all")))
 
         self.create_widgets()
-        
     
-        
         
         
     def create_widgets(self):
@@ -131,7 +129,7 @@ class RobotPortrait:
           
         
         try:
-            if not hasattr(self, 'first_gen_images'):
+            if not hasattr(self, 'first_gen_images'): # only shows first gen when it is the first gen
                 result = subprocess.run(["python3", "firstGen.py"], capture_output=True, text=True)
     
                 if result.returncode != 0:
@@ -141,13 +139,8 @@ class RobotPortrait:
             
                 
                 image_names = json.loads(result.stdout.strip())
-                
-                #image_directory = "data_sample" 
                 image_paths = [os.path.join(img_name) for img_name in image_names]
-    
                 self.first_gen_images = image_paths
-            #print(image_paths)
-            
                 self.display_images(image_paths, True)
         
         except Exception as e:
@@ -162,16 +155,6 @@ class RobotPortrait:
         for widget in self.frame_portraits.winfo_children():
             widget.destroy()
         
-            #self.portrait_buttons = []
-        '''
-        if isinstance(img_name, str):
-            img = Image.open(os.path.join(self.image_folder, img_name)).resize((128, 128))
-        elif isinstance(img_name, Image.Image):
-            img = img_name.resize((128,128))
-        else: 
-            continue
-        '''
-        #img_tk = ImageTk.PhotoImage(img)
     
         for i, img_name in enumerate(image_paths):
             if boole:
@@ -182,26 +165,20 @@ class RobotPortrait:
                 btn.grid(row=i // 4, column=i % 4, padx=5, pady=5)
                 self.portrait_buttons.append(btn)
             else:
-                #print("Bien rentrée!")
-                img_tk = ImageTk.PhotoImage(img_name)
-                btn = tk.Button(self.frame_portraits, image=img_tk, command=lambda p=img_name: self.select_portrait(p))
+                img_pil= img_name
+                img_tk = ImageTk.PhotoImage(img_pil)
+                btn = tk.Button(self.frame_portraits, image=img_tk, command=lambda p=img_pil: self.select_portrait(p))
                 btn.image = img_tk
                 btn.grid(row=i // 4, column=i % 4, padx=5, pady=5)
                 self.portrait_buttons.append(btn)
-           
-        #for i in self.Img :
-            #img_tk = ImageTk.PhotoImage(i)
-            '''
-            btn = tk.Button(self.frame_portraits, image=img_tk, command=lambda p=img_tk: self.select_portrait(p))
-            btn.image = img_tk
-            btn.grid(row=i // 4, column=i % 4, padx=5, pady=5)
-            self.portrait_buttons.append(btn)
-            '''
+        
+       
     def select_portrait(self, portrait):
         if len(self.selected_portraits) < 4:
             self.selected_portraits.append(portrait)
         if len(self.selected_portraits) == 4:
             self.btn_next.config(state=tk.NORMAL)
+            self.btn_final_choice.config(state=tk.NORMAL)
         print(f"Selected portraits: {len(self.selected_portraits)}")  # Debugging line
         if len(self.selected_portraits) > 4:
             messagebox.showwarning("Warning !!", "You have to only select 4 portraits.")
@@ -210,36 +187,13 @@ class RobotPortrait:
             self.btn_final_choice.config(state=tk.NORMAL)
 
         # 1st portrait chosen is the best one
-        '''
-        img_path = os.path.join(self.image_folder, self.selected_portraits[0])
-        img = Image.open(img_path)
-        img_resized=img.resize((128,128))
-        '''
-        img_tk = ImageTk.PhotoImage(self.selected_portraits[0])
-        self.canvas_selected.create_image(64, 64, image=img_tk)
-        self.canvas_selected.image = img_tk
+        if self.selected_portraits:
+            img_tk = ImageTk.PhotoImage(self.selected_portraits[0])
+            self.canvas_selected.create_image(64, 64, image=img_tk)
+            self.canvas_selected.image = img_tk
         
-        print("j'ai choisi mes images!")
-        nouvelles_images=newImages(self.selected_portraits)
-        PIL_img=conversion_tensor_to_PIL(nouvelles_images)
-        print('PIL_img', PIL_img)
-        '''
-        Img = newImages(self.selected_portraits) 
-        #self.firstGen=False
-        newImg=[]
-        for image in Img:
-            img_array=image.numpy()
-            img_array=np.squeeze(img_array)
-            if img_array.dtype == np.float32 or img_array.max() <= 1.0:
-                img_array = (img_array * 255).astype(np.uint8)
-            else:
-                img_array = img_array.astype(np.uint8)
-
-            img_pil = Image.fromarray(img_array)
-            newImg.append(img_pil)
-        '''
-        self.display_images(PIL_img, boole=False)
-
+        
+        
     def final_choice(self):
         self.history.append(self.selected_portraits.copy())
         
@@ -249,9 +203,7 @@ class RobotPortrait:
         final_message=tk.Label(self.root, text="Your final chosen portrait!", font=("Baskerville", 24), bg="#eefbfb", fg="#722f37")
         final_message.pack(pady=20)
         
-        final_portrait_path = os.path.join(self.image_folder, self.selected_portraits[0])
-        img = Image.open(final_portrait_path).resize((300, 300))
-        img_tk = ImageTk.PhotoImage(img)
+        img_tk = ImageTk.PhotoImage(self.selected_portraits[0])
 
         final_portrait_label = tk.Label(self.root, image=img_tk)
         final_portrait_label.image = img_tk
@@ -261,13 +213,20 @@ class RobotPortrait:
         ending_message.pack(pady=10)
 
     def next_step(self):
+        if len(self.selected_portraits) != 4:
+            return  # no next step if there isn't 4 portraits 
         "Next step with 12 new portraits"
-
+        nouvelles_images = newImages(self.selected_portraits)
+        PIL_img = conversion_tensor_to_PIL(nouvelles_images)
+        
         self.history.append(self.selected_portraits.copy())
         self.selected_portraits = []
         self.btn_next.config(state=tk.DISABLED)
         self.btn_back.config(state=tk.NORMAL)
-        self.generate_portraits()
+        
+        self.display_images(PIL_img, boole=False)
+        
+        
 
     def previous_step(self):
         "Return step"
