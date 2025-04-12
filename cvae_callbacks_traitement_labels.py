@@ -31,7 +31,7 @@ from google.colab import drive
 drive.mount('/content/drive')
 
 cd drive/MyDrive/Colab Notebooks
-"""
+
 
 # Load compressed data
 loaded = np.load("processed_faces_50000.npz") # Check the npz filename and path
@@ -40,7 +40,7 @@ data = loaded["data"]
 # Normalization
 data = data.astype('float32') / 255.0
 print("Data shape: ", data.shape)  # The shape should be (50000, 128, 128, 3)
-
+"""
 
 def build_encoder(input_shape=(128, 128, 3)):
     '''
@@ -225,8 +225,8 @@ class LossHistoryCallback(keras.callbacks.Callback):
     -----------
     Callback that records loss values at the end of each epoch during training.
 
-    It stores the total loss, reconstruction loss, and KL divergence loss in 
-    three separate lists. These values can later be used to visualize training 
+    It stores the total loss, reconstruction loss, and KL divergence loss in
+    three separate lists. These values can later be used to visualize training
     progress and assess whether the model is fitting well.
     '''
     def __init__(self):
@@ -283,6 +283,7 @@ class GenerateImageCallback(tf.keras.callbacks.Callback):
 
 latent_dim = 32  #  latent space dimension
 
+"""
 # Build the first encoder/decoder
 encoder = build_encoder(input_shape=(128, 128, 3))
 decoder = build_decoder(output_shape=(128, 128, 3))
@@ -355,4 +356,4 @@ plt.title("Image")
 plt.imshow(img_np)
 plt.axis('off')
 plt.show()
-
+"""
