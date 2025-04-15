@@ -96,10 +96,10 @@ class RobotPortrait:
         self.frame_btn = tk.Frame(self.root, bg="#f0f0f0")
         self.frame_btn.pack(pady=10)
         
-        self.btn_back = tk.Button(self.frame_btn, text="Return looooser !", command=self.previous_step, state=tk.DISABLED, bg="#623a00", fg="white", font=("Baskerville", 10, "bold"))
+        self.btn_back = tk.Button(self.frame_btn, text="Go Back", command=self.previous_step, state=tk.DISABLED, bg="#623a00", fg="white", font=("Baskerville", 10, "bold"))
         self.btn_back.pack(side=tk.LEFT, padx=10)
         
-        self.btn_next = tk.Button(self.frame_btn, text="Thank you, Next !", command=self.next_step, state=tk.DISABLED, bg="#401740", fg="white", font=("Baskerville", 10, "bold"))
+        self.btn_next = tk.Button(self.frame_btn, text="Mutate", command=self.next_step, state=tk.DISABLED, bg="#401740", fg="white", font=("Baskerville", 10, "bold"))
         self.btn_next.pack(side=tk.RIGHT, padx=10)
         
         self.frame_right = tk.Frame(self.root, bg="#eefbfb")  # New frame for right alignment
