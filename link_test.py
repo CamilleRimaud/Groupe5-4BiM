@@ -1,5 +1,8 @@
-## lien entre autoencodeur et algo gen
-
+'''
+    Ce fichier est un copie de link.py, cependant il n'est pas utilisable avec l'interface graphique.
+    Il permet justement de vérifier le résultat attendu sans l'intervention de l'interface graphique, 
+    et sans de potentielles erreurs de conversion entre les tensors et Image PIL
+'''
 #importer les fonctions et librairies de l'autoencodeur
 from tensorflow import keras
 import matplotlib.pyplot as plt
