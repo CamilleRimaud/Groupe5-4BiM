@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from keras.models import load_model
 from algo_gen import crossover, mutation
-from cvae_callbacks_traitement_labels import build_decoder, build_encoder
+from CVAE import build_decoder, build_encoder
 from PIL import Image
 import tensorflow as tf
 from img_preprocessing import import_data, format_img
