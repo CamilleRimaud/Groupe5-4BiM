@@ -1,10 +1,10 @@
 # Guide d'installation
 Il est nécessaire d'avoir au préalable les packages suivants :
-* python (version 3.7)
-* tensorflow
-* keras
+* python (version 3.9.7)
+* tensorflow (version 2.19.0)
+* keras (version 3.9.0)
 * PIL
-* sklearn
+* sklearn (version 1.6.1)
 * (numpy et mathplotlib)
 
 
