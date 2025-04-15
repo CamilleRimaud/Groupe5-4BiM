@@ -73,15 +73,3 @@ dec = build_decoder(output_shape=(128,128,3))
 enc.load_weights("encoder_50000.weights.h5")
 dec.load_weights("decoder_50000.weights.h5")
 
-"""
-loaded = np.load("processed_faces_1000.npz")
-data=loaded["data"]
-
-data=data.astype('float32')/255.0
-
-images_originales=data[0:4]
-"""
-#images_originales= RobotPortrait(root).select_portrait() # il faudra mettre le choix de l'user
-
-#nouvelles_images=newImages(images_originales)
-#PIL_img=conversion_tensor_to_PIL(nouvelles_images)
