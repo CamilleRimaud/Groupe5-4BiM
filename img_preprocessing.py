@@ -12,7 +12,7 @@ def format_img(id):
     Returns:
         The Numpy array corresponding to the image.
     """
-    image = Image.open(f'./{id}.jpg')
+    image = Image.open(f'./data_sample/{id}.jpg')
     image = image.crop((0, 20, 178, 198))
     img_resized = image.resize((128, 128))
     image_np = np.array(img_resized)
@@ -39,10 +39,10 @@ def import_data(nb_img):
     return data
 
 """
-# Import the first 50000 images
+# Import the first 1000 images
 data = import_data(1000)
 
 # Save as Numpy compressed file
-np.savez_compressed("processed_faces_50000.npz", data=data)
-print("Transformed images saved as: processed_faces_50000.npz")
+np.savez_compressed("processed_faces_1000.npz", data=data)
+print("Transformed images saved as: processed_faces_1000.npz")
 """
