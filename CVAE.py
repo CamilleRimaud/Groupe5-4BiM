@@ -283,6 +283,7 @@ class GenerateImageCallback(tf.keras.callbacks.Callback):
 
 latent_dim = 32  #  latent space dimension
 
+# To test that the CVAE is functionning correctly, unquote the following section
 """
 # Build the first encoder/decoder
 encoder = build_encoder(input_shape=(128, 128, 3))
