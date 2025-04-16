@@ -1,8 +1,8 @@
 # Dev_logiciel
 Projet de développement logiciel 4BiM - Groupe 5
-Générateur de portraits robots
-Gehao Hua, Jeanne Le Guillou, Meyane Marage, Camille Rimaud  
-Mars 2025
+>Générateur de portraits robots
+>Gehao Hua, Jeanne Le Guillou, Meyane Marage, Camille Rimaud  
+>Mars 2025
 
 # Guide d'installation
 Il est nécessaire d'avoir au préalable les packages suivants :
