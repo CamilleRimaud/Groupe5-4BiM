@@ -15,6 +15,9 @@ Il est nécessaire d'avoir au préalable les packages suivants :
 * sklearn (version 1.6.1)
 * (numpy et mathplotlib)
 
+Il est possible de cloner ce répertoire à l'aide de l'URL.
+>Utiliser la commande git clone
+
 # Documentation  
 1. Introduction
 
