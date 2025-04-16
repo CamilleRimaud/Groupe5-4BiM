@@ -13,7 +13,7 @@ Il est nécessaire d'avoir au préalable les packages suivants :
 * sklearn (version 1.6.1)
 * (numpy et mathplotlib)
 
-**Documentation**  
+# Documentation  
 1. Introduction
 
 Le logiciel permet de transformer des images en objets appelés vecteurs latents, sur lesquels est appliqué un algorithme génétique, créant de nouveaux vecteurs. Ceux-ci peuvent subir une transformation inverse pour générer des images inédites (qui ne proviennent pas de la banque d’images).
