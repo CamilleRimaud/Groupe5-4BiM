@@ -1,3 +1,9 @@
+# Dev_logiciel
+Projet de développement logiciel 4BiM - Groupe 5
+Générateur de portraits robots
+Gehao Hua, Jeanne Le Guillou, Meyane Marage, Camille Rimaud  
+Mars 2025
+
 # Guide d'installation
 Il est nécessaire d'avoir au préalable les packages suivants :
 * python (version 3.9.7)
@@ -7,15 +13,7 @@ Il est nécessaire d'avoir au préalable les packages suivants :
 * sklearn (version 1.6.1)
 * (numpy et mathplotlib)
 
-
-# Dev_logiciel
-Projet de développement logiciel 4BiM - Groupe 5
-
-
 **Documentation**  
-Gehao Hua, Jeanne Le Guillou, Meyane Marage, Camille Rimaud  
-Mars 2025
-
 1. Introduction
 
 Le logiciel permet de transformer des images en objets appelés vecteurs latents, sur lesquels est appliqué un algorithme génétique, créant de nouveaux vecteurs. Ceux-ci peuvent subir une transformation inverse pour générer des images inédites (qui ne proviennent pas de la banque d’images).
