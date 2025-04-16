@@ -1,4 +1,4 @@
-# Dev_logiciel
+# Groupe 5 - 4 BiM
 ## Générateur de portraits robots
 >Projet de développement logiciel 4BiM - Groupe 5
 >Gehao Hua, Jeanne Le Guillou, Meyane Marage, Camille Rimaud  
