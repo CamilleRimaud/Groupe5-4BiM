@@ -16,7 +16,7 @@ Il est nécessaire d'avoir au préalable les packages suivants :
 * (numpy et mathplotlib)
 
 Il est possible de cloner ce répertoire à l'aide de l'URL.
->Utiliser la commande : git clone [https://github.com/CamilleRimaud/Dev_logiciel.git](https://github.com/CamilleRimaud/Groupe5-4BiM.git)
+>Utiliser la commande : git clone https://github.com/CamilleRimaud/Groupe5-4BiM.git
 
 # Documentation  
 1. Introduction
