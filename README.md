@@ -4,6 +4,8 @@
 >Gehao Hua, Jeanne Le Guillou, Meyane Marage, Camille Rimaud  
 >Mars 2025
 
+_Ce projet est concédé sous licence selon les termes de la licence MIT._
+
 # Guide d'installation
 Il est nécessaire d'avoir au préalable les packages suivants :
 * python (version 3.9.7)
